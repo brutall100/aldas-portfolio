@@ -7,7 +7,9 @@
 # served either.
 exclude:
   - cv/          # CV source, fonts and licences — only needed locally
+  - docs/        # README screenshots
   - README.md
+  - README.lt.md
   - .htaccess    # Apache-only; inert on Pages, listed here to be explicit
 
 # Keep Jekyll from touching anything: no layouts, no Liquid rendering of the
