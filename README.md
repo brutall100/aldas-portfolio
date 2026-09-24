@@ -1,5 +1,9 @@
 # Aldas Kšečkauskas — Portfolio
 
+[![Website](https://img.shields.io/badge/Website-aldas--portfolio.site-blue?style=for-the-badge)](https://aldas-portfolio.site)
+
+**🌐 Live site: [https://aldas-portfolio.site](https://aldas-portfolio.site)**
+
 Source for [aldas-portfolio.site](https://aldas-portfolio.site).
 
 ## About this site
