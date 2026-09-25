@@ -243,6 +243,261 @@
     }
   }
 
+  /* ── Space quote: orbiting planets + three quotes made of stardust ── */
+  var spaceQuote = document.getElementById('spaceQuote');
+  if (spaceQuote) initSpaceQuote(spaceQuote);
+
+  function initSpaceQuote(box) {
+    var quotes = [
+      { text: '“Choose a job you love, and you will never have to work a day in your life.”', by: 'Confucius' },
+      { text: '“Measure twice, cut once.”', by: 'Carpenter’s proverb' },
+      { text: '“First, solve the problem. Then, write the code.”', by: 'John Johnson' }
+    ];
+    var textEl = document.getElementById('quoteText');
+    var citeEl = document.getElementById('quoteCite');
+    var dotsEl = document.getElementById('quoteDots');
+    var canvas = box.querySelector('.space-canvas');
+    var ctx = canvas.getContext('2d');
+    var current = 0;
+    var busy = false;
+    var visible = false;
+    var timer = null;
+    var HOLD = 7500;
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+
+    // Build the quote as word spans holding letter spans. Each letter starts
+    // somewhere out in space (--dx/--dy) so it can fly in to its place.
+    function build(text) {
+      textEl.textContent = '';
+      var spoken = document.createElement('span');   // what screen readers read
+      spoken.className = 'sr-only';
+      spoken.textContent = text;
+      var shown = document.createElement('span');    // the letters people see
+      shown.setAttribute('aria-hidden', 'true');
+      textEl.appendChild(spoken);
+      textEl.appendChild(shown);
+      var i = 0;
+      text.split(' ').forEach(function (word, w) {
+        if (w) shown.appendChild(document.createTextNode(' '));
+        var ws = document.createElement('span');
+        ws.className = 'qw';
+        Array.prototype.forEach.call(word, function (ch) {
+          var c = document.createElement('span');
+          c.className = 'qc';
+          c.textContent = ch;
+          c.style.setProperty('--i', i++);
+          c.style.setProperty('--dx', rand(-320, 320).toFixed(0) + 'px');
+          c.style.setProperty('--dy', rand(-160, 160).toFixed(0) + 'px');
+          c.style.setProperty('--r', rand(-240, 240).toFixed(0) + 'deg');
+          ws.appendChild(c);
+        });
+        shown.appendChild(ws);
+      });
+      return i;
+    }
+
+    function setDots() {
+      Array.prototype.forEach.call(dotsEl.children, function (d, i) {
+        d.setAttribute('aria-current', String(i === current));
+      });
+    }
+
+    function show(next) {
+      if (busy || next === current) return;
+      busy = true;
+      var letters = textEl.querySelectorAll('.qc');
+
+      // letters crumble: they fall down and drift apart, leaving dust on the canvas
+      var boxRect = box.getBoundingClientRect();
+      Array.prototype.forEach.call(letters, function (c, i) {
+        c.style.setProperty('--dx', rand(-90, 90).toFixed(0) + 'px');
+        c.style.setProperty('--dy', rand(40, 170).toFixed(0) + 'px');
+        c.style.setProperty('--r', rand(-200, 200).toFixed(0) + 'deg');
+        if (i % 2 === 0) {
+          var r = c.getBoundingClientRect();
+          addDust(r.left - boxRect.left + r.width / 2, r.top - boxRect.top + r.height / 2, i * 9);
+        }
+      });
+      box.classList.add('is-out');
+
+      setTimeout(function () {
+        current = next;
+        build(quotes[current].text);   // new letters start scattered (box is still .is-out)
+        citeEl.textContent = quotes[current].by;
+        setDots();
+        void textEl.offsetWidth;        // let the browser place them before they fly in
+        box.classList.remove('is-out');
+        setTimeout(function () { busy = false; }, 900);
+      }, reduceMotion ? 400 : 700 + letters.length * 9);
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      if (visible && !document.hidden) {
+        timer = setTimeout(function () { show((current + 1) % quotes.length); schedule(); }, HOLD);
+      }
+    }
+
+    quotes.forEach(function (q, i) {
+      var d = document.createElement('button');
+      d.type = 'button';
+      d.setAttribute('aria-label', 'Quote ' + (i + 1) + ' of ' + quotes.length);
+      d.addEventListener('click', function () { show(i); schedule(); });
+      dotsEl.appendChild(d);
+    });
+    dotsEl.hidden = false;
+    build(quotes[0].text);
+    setDots();
+
+    /* the space scene */
+    var W = 0, H = 0, dpr = 1, stars = [], dust = [], meteor = null, last = 0, raf = 0;
+    var planets = [
+      { orbit: .34, size: 3.4, speed: .55,  color: '#22d3ee', a: 1.2 },
+      { orbit: .55, size: 5.6, speed: .32,  color: '#f472b6', a: 3.9 },
+      { orbit: .78, size: 7.4, speed: .2,   color: '#e8b04b', a: 5.2, ring: true },
+      { orbit: 1.02, size: 4.6, speed: .13, color: '#7c6cff', a: 2.4 }
+    ];
+
+    function resize() {
+      var r = box.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      stars = [];
+      var n = Math.round(W * H / 3200);
+      for (var i = 0; i < n; i++) {
+        stars.push({ x: Math.random() * W, y: Math.random() * H, r: rand(.3, 1.3), p: rand(0, 6.3), s: rand(.6, 2) });
+      }
+      if (reduceMotion) draw(0);
+    }
+
+    function addDust(x, y, delay) {
+      if (reduceMotion) return;
+      for (var k = 0; k < 2; k++) {
+        dust.push({ x: x, y: y, vx: rand(-25, 25), vy: rand(-20, 10), life: 0, max: rand(.9, 1.6), wait: delay / 1000 });
+      }
+      wake();
+    }
+
+    function sun() {
+      var narrow = W < 560;
+      return narrow ? { x: W * .5, y: H * .1, R: W * .5 }
+                    : { x: W * .84, y: H * .5, R: Math.min(W * .26, H * 1.1) };
+    }
+
+    function drawPlanet(p, cx, cy, R) {
+      var rx = R * p.orbit, ry = rx * .3;
+      var x = cx + Math.cos(p.a) * rx, y = cy + Math.sin(p.a) * ry;
+      var depth = .8 + .35 * Math.sin(p.a);          // closer = bigger and brighter
+      var r = p.size * depth;
+      ctx.globalAlpha = .55 + .45 * (depth - .45);
+      var g = ctx.createRadialGradient(x - r * .4, y - r * .4, r * .1, x, y, r);
+      g.addColorStop(0, '#ffffff');
+      g.addColorStop(.35, p.color);
+      g.addColorStop(1, 'rgba(0,0,0,.6)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+      if (p.ring) {
+        ctx.strokeStyle = 'rgba(232,176,75,.55)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.ellipse(x, y, r * 2.1, r * .6, -.35, 0, 6.2832); ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function draw(t) {
+      var dt = Math.min(.05, (t - last) / 1000 || 0);
+      last = t;
+      ctx.clearRect(0, 0, W, H);
+
+      // twinkling stars
+      stars.forEach(function (s) {
+        ctx.globalAlpha = .35 + .45 * Math.abs(Math.sin(s.p + t / 1000 * s.s));
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(s.x, s.y, s.r, s.r);
+      });
+      ctx.globalAlpha = 1;
+
+      var S = sun();
+      // orbits
+      ctx.strokeStyle = 'rgba(255,255,255,.07)';
+      ctx.lineWidth = 1;
+      planets.forEach(function (p) {
+        ctx.beginPath(); ctx.ellipse(S.x, S.y, S.R * p.orbit, S.R * p.orbit * .3, 0, 0, 6.2832); ctx.stroke();
+        p.a += p.speed * dt;
+      });
+      // planets behind the sun, the sun, then planets in front of it
+      planets.forEach(function (p) { if (Math.sin(p.a) < 0) drawPlanet(p, S.x, S.y, S.R); });
+      var glow = ctx.createRadialGradient(S.x, S.y, 0, S.x, S.y, S.R * .28);
+      glow.addColorStop(0, 'rgba(255,236,200,1)');
+      glow.addColorStop(.12, 'rgba(255,190,110,.9)');
+      glow.addColorStop(.35, 'rgba(244,114,182,.25)');
+      glow.addColorStop(1, 'rgba(124,108,255,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(S.x, S.y, S.R * .28, 0, 6.2832); ctx.fill();
+      planets.forEach(function (p) { if (Math.sin(p.a) >= 0) drawPlanet(p, S.x, S.y, S.R); });
+
+      // a shooting star now and then
+      if (!meteor && Math.random() < dt * .12) {
+        meteor = { x: rand(W * .1, W * .7), y: rand(0, H * .3), vx: rand(260, 380), vy: rand(80, 140), life: 0 };
+      }
+      if (meteor) {
+        meteor.life += dt;
+        meteor.x += meteor.vx * dt; meteor.y += meteor.vy * dt;
+        var tail = ctx.createLinearGradient(meteor.x, meteor.y, meteor.x - meteor.vx * .15, meteor.y - meteor.vy * .15);
+        tail.addColorStop(0, 'rgba(255,255,255,.9)');
+        tail.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.strokeStyle = tail; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(meteor.x, meteor.y);
+        ctx.lineTo(meteor.x - meteor.vx * .15, meteor.y - meteor.vy * .15); ctx.stroke();
+        if (meteor.life > 1.2 || meteor.x > W || meteor.y > H) meteor = null;
+      }
+
+      // stardust left behind by falling letters
+      dust = dust.filter(function (d) {
+        if (d.wait > 0) { d.wait -= dt; return true; }
+        d.life += dt;
+        d.vy += 60 * dt;
+        d.x += d.vx * dt; d.y += d.vy * dt;
+        var k = 1 - d.life / d.max;
+        if (k <= 0) return false;
+        ctx.globalAlpha = k;
+        ctx.fillStyle = d.life < .2 ? '#fff' : '#9ee7f5';
+        ctx.fillRect(d.x, d.y, 1.6, 1.6);
+        return true;
+      });
+      ctx.globalAlpha = 1;
+
+      raf = visible && !document.hidden && !reduceMotion ? requestAnimationFrame(draw) : 0;
+    }
+
+    function wake() {
+      if (!raf && visible && !document.hidden && !reduceMotion) {
+        last = performance.now();
+        raf = requestAnimationFrame(draw);
+      }
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    // only animate while the box is on screen and the tab is open
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        if (visible) { resize(); wake(); }
+        schedule();
+      }, { threshold: .1 }).observe(box);
+    } else {
+      visible = true; wake(); schedule();
+    }
+    document.addEventListener('visibilitychange', function () { wake(); schedule(); });
+    if (reduceMotion) draw(0);
+  }
+
   /* ── Rotating job title ───────────────────────────────── */
   var rotator = document.getElementById('rotator');
   if (rotator && !reduceMotion) {
@@ -250,6 +505,8 @@
       'Full-Stack Developer',
       'TypeScript Developer',
       'Next.js Builder',
+      'Real-time App Maker',
+      'AI Integrator',
       'Problem Solver'
     ];
     var i = 0;
