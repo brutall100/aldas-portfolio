@@ -1151,6 +1151,69 @@ html:not(.js) .projects-more { display: none; }
 }
 .to-top:hover { transform: translateY(-3px); border-color: var(--accent-2); }
 
+/* ── BUTTON FEEL ──────────────────────────────────────────────
+   Every button and button-like link: springs up and grows a little on
+   hover, squishes down when pressed, and sends a ripple out from the
+   spot you clicked (the ripple <span> is added by script.js). */
+.btn, .project-link, .lang-switch, .icon-btn, .burger, .social-link, .to-top {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .45s cubic-bezier(.34, 1.56, .64, 1),
+              box-shadow .35s var(--ease), border-color .3s var(--ease),
+              background-color .3s var(--ease), color .3s var(--ease), gap .3s var(--ease);
+}
+
+@media (hover: hover) {
+  .btn:hover,
+  .project-link:hover,
+  .social-link:hover { transform: translateY(-3px) scale(1.06); }
+  .icon-btn:hover,
+  .burger:hover,
+  .to-top:hover      { transform: translateY(-2px) scale(1.1); }
+  .lang-switch:hover { transform: scale(1.08); }
+
+  .btn-primary:hover {
+    box-shadow: 0 18px 40px -12px color-mix(in srgb, var(--accent-1) 85%, transparent),
+                0 0 0 4px color-mix(in srgb, var(--accent-2) 18%, transparent);
+  }
+  .btn-ghost:hover, .project-link:hover, .social-link:hover,
+  .icon-btn:hover, .burger:hover, .to-top:hover, .lang-switch:hover {
+    box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--accent-2) 70%, transparent),
+                0 0 0 3px color-mix(in srgb, var(--accent-2) 14%, transparent);
+  }
+  .project-link:hover .icon, .social-link:hover .icon, .btn-ghost:hover .icon {
+    transform: rotate(-8deg) scale(1.15);
+  }
+}
+.project-link .icon, .social-link .icon { transition: transform .35s var(--ease); }
+
+/* pressed: a quick squish */
+.btn:active, .project-link:active, .lang-switch:active, .icon-btn:active,
+.burger:active, .social-link:active, .to-top:active {
+  transform: scale(.93);
+  transition-duration: .08s;
+}
+
+.ripple {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--accent-2);
+  opacity: .45;
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple .65s var(--ease) forwards;
+}
+.btn-primary .ripple { background: #fff; }
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .project-link, .lang-switch, .icon-btn, .burger, .social-link, .to-top { transition-duration: .01ms; }
+  .ripple { display: none; }
+}
+
 /* ── 8. RESPONSIVE ────────────────────────────────────────── */
 @media (max-width: 960px) {
   .hero-inner {

@@ -65,6 +65,25 @@
     });
   }
 
+  /* ── Click ripple on buttons ─────────────────────────── */
+  if (!reduceMotion) {
+    document.addEventListener('pointerdown', function (e) {
+      var btn = e.target.closest('.btn, .project-link, .lang-switch, .icon-btn, .burger, .social-link, .to-top');
+      if (!btn) return;
+      var rect = btn.getBoundingClientRect();
+      // big enough to reach the farthest corner from where you pressed
+      var size = 2 * Math.hypot(Math.max(e.clientX - rect.left, rect.right - e.clientX),
+                                Math.max(e.clientY - rect.top, rect.bottom - e.clientY));
+      var wave = document.createElement('span');
+      wave.className = 'ripple';
+      wave.style.width = wave.style.height = size + 'px';
+      wave.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      wave.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      btn.appendChild(wave);
+      wave.addEventListener('animationend', function () { wave.remove(); });
+    });
+  }
+
   /* ── Mobile menu ──────────────────────────────────────── */
   var burger = document.getElementById('burger');
   var nav = document.getElementById('nav');
