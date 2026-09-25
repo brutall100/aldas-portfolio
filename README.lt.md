@@ -88,7 +88,8 @@ Paleisk bet kokį statinį serverį, pvz. `python3 -m http.server`, ir atidaryk
 ```
 index.html    struktūra ir turinys
 style.css     dizaino kintamieji, išdėstymas, animacijos
-script.js     tema, meniu, atsiradimas slenkant, progreso juosta
+script.js     tema, meniu, atsiradimas slenkant, progreso juosta, kosmoso citata
+about-viz.js  mažos animuotos scenos „About“ kortelėse
 img/          profilio nuotrauka; img/projects/ – šviesios ir tamsios projektų nuotraukos
 docs/         README ekrano nuotraukos
 ```

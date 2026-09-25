@@ -88,7 +88,8 @@ Start any static server, e.g. `python3 -m http.server`, then open
 ```
 index.html    markup and content
 style.css     design tokens, layout, animations
-script.js     theme, menu, scroll reveal, progress bar
+script.js     theme, menu, scroll reveal, progress bar, space quote
+about-viz.js  the small animated scenes on the About cards
 img/          profile photo; img/projects/ has light + dark project shots
 docs/         README screenshots
 ```
