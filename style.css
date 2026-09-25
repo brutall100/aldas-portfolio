@@ -17,6 +17,7 @@
   /* dark theme (default) */
   --bg:            #070711;
   --bg-elevated:   rgba(255, 255, 255, .04);
+  --bg-card:       rgba(16, 16, 32, .72);
   --bg-elevated-2: rgba(255, 255, 255, .07);
   --text:          #f2f3f8;
   --text-muted:    #a1a3b8;
@@ -43,6 +44,7 @@
 :root[data-theme="light"] {
   --bg:            #f6f7fb;
   --bg-elevated:   rgba(255, 255, 255, .78);
+  --bg-card:       rgba(255, 255, 255, .86);
   --bg-elevated-2: rgba(255, 255, 255, .95);
   --text:          #14162b;
   --text-muted:    #545876;
@@ -157,14 +159,15 @@ p { margin: 0; }
   min-width: 340px;
   min-height: 340px;
   border-radius: 50%;
-  filter: blur(90px);
+  background: radial-gradient(circle closest-side, var(--c) 0%,
+      color-mix(in srgb, var(--c) 45%, transparent) 45%, transparent 100%);
   opacity: var(--blob-opacity);
   transition: opacity .6s var(--ease);
   will-change: transform;
 }
-.blob-1 { background: var(--accent-1); top: -14%; left: -10%;  animation: drift-1 22s ease-in-out infinite; }
-.blob-2 { background: var(--accent-2); top: 32%;  right: -14%; animation: drift-2 26s ease-in-out infinite; }
-.blob-3 { background: var(--accent-3); bottom: -18%; left: 24%; animation: drift-3 30s ease-in-out infinite; }
+.blob-1 { --c: var(--accent-1); top: -14%; left: -10%;  animation: drift-1 22s ease-in-out infinite; }
+.blob-2 { --c: var(--accent-2); top: 32%;  right: -14%; animation: drift-2 26s ease-in-out infinite; }
+.blob-3 { --c: var(--accent-3); bottom: -18%; left: 24%; animation: drift-3 30s ease-in-out infinite; }
 
 .grid-overlay {
   position: absolute;
@@ -269,10 +272,10 @@ p { margin: 0; }
 .scroll-progress span {
   display: block;
   height: 100%;
-  width: 0;
   background: var(--gradient);
   box-shadow: 0 0 14px rgba(124, 108, 255, .8);
-  transition: width .1s linear;
+  transform: scaleX(0);
+  transform-origin: left;
 }
 
 /* ── 4. HEADER & NAV ──────────────────────────────────────── */
@@ -762,9 +765,7 @@ p { margin: 0; }
   padding: 24px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-card);
   overflow: hidden;
   isolation: isolate;
   transition: transform .45s var(--ease), border-color .45s var(--ease),
@@ -903,9 +904,7 @@ p { margin: 0; }
   padding: 0;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-card);
   overflow: hidden;
   isolation: isolate;
   color: inherit;
@@ -948,7 +947,6 @@ p { margin: 0; }
   border-radius: 99px;
   border: 1px solid var(--border-strong);
   background: color-mix(in srgb, var(--bg) 80%, transparent);
-  backdrop-filter: blur(10px);
   font-family: var(--font-head);
   font-size: .66rem;
   font-weight: 600;
@@ -1063,9 +1061,7 @@ html:not(.js) .projects-more { display: none; }
   padding: clamp(44px, 7vw, 76px) clamp(26px, 5vw, 60px);
   border-radius: clamp(26px, 4vw, 40px);
   border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-card);
   text-align: center;
   overflow: hidden;
   box-shadow: var(--shadow);
