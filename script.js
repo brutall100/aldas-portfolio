@@ -49,21 +49,15 @@
     });
   });
 
-  /* ── "Show all projects" ──────────────────────────────── */
-  var projectGrid = document.getElementById('projectGrid');
-  var showAllBtn = document.getElementById('showAllProjects');
-
-  if (projectGrid && showAllBtn) {
-    var extraCount = projectGrid.querySelectorAll('.is-extra').length;
-    if (!extraCount) showAllBtn.parentNode.hidden = true;
-
-    showAllBtn.addEventListener('click', function () {
-      var open = projectGrid.classList.toggle('is-expanded');
-      showAllBtn.setAttribute('aria-expanded', String(open));
-      showAllBtn.firstChild.textContent = open ? 'Show fewer projects ' : 'Show all projects ';
-      if (!open) document.getElementById('projects').scrollIntoView();
-    });
-  }
+  /* ── Project screenshots: fade in once loaded (the ghost sweep shows until then) ── */
+  Array.prototype.forEach.call(document.querySelectorAll('.project-media img'), function (img) {
+    function done() { img.classList.add('is-loaded'); }
+    if (img.complete && img.naturalWidth) done();
+    else {
+      img.addEventListener('load', done);
+      img.addEventListener('error', done);
+    }
+  });
 
   /* ── Click ripple on buttons ─────────────────────────── */
   if (!reduceMotion) {

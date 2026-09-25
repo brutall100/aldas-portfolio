@@ -810,7 +810,7 @@ p { margin: 0; }
 /* about */
 .about-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 18px;
 }
 .card-icon {
@@ -931,8 +931,6 @@ p { margin: 0; }
               0 18px 50px -30px var(--warm);
 }
 
-/* until "Show all projects" is pressed, only the first cards are shown */
-.js .project-grid:not(.is-expanded) .is-extra { display: none; }
 
 .project-media {
   position: relative;
@@ -948,8 +946,24 @@ p { margin: 0; }
   height: 100%;
   object-fit: cover;
   object-position: top;
-  transition: transform .7s var(--ease), opacity .45s var(--ease);
+  transition: transform .7s var(--ease), opacity .5s var(--ease);
 }
+
+/* ghost placeholder: a soft light sweep shows in the frame until the
+   screenshot has arrived, then the picture fades in over it */
+.project-media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%,
+      color-mix(in srgb, var(--text) 9%, transparent) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: ghost-sweep 1.3s ease-in-out infinite;
+}
+.project-media:has(> img.is-loaded)::before { animation: none; opacity: 0; }
+.project-media img { position: relative; }
+.js .project-media img:not(.is-loaded) { opacity: 0; }
+@keyframes ghost-sweep { to { transform: translateX(100%); } }
 .project-card:hover .project-media img { transform: scale(1.04); }
 
 /* the screenshot follows the site theme: light shot in light mode, dark shot in dark mode */
@@ -1075,13 +1089,6 @@ p { margin: 0; }
 .project-link-alt:hover { color: var(--text); border-color: var(--border-strong); }
 .icon-solid { fill: currentColor; stroke: none; }
 
-.projects-more {
-  display: flex;
-  justify-content: center;
-  margin-top: 22px;
-}
-.projects-count { color: var(--text-faint); font-weight: 500; }
-html:not(.js) .projects-more { display: none; }
 
 /* ── 7. CONTACT & FOOTER ──────────────────────────────────── */
 .section-contact { padding-bottom: clamp(48px, 7vw, 80px); }
