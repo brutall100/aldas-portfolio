@@ -470,7 +470,7 @@ p { margin: 0; }
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: calc(var(--header-h) + 48px) 0 96px;
+  padding: calc(var(--header-h) + 40px) 0 64px;
 }
 
 .hero-inner {
@@ -701,11 +701,14 @@ p { margin: 0; }
 .marquee span:hover { color: var(--accent-2); }
 
 /* ── 6. SECTIONS ──────────────────────────────────────────── */
-.section { padding: clamp(56px, 8vw, 96px) 0; }
+.section { padding: clamp(36px, 5vw, 64px) 0; }
+/* back-to-back sections share one gap instead of stacking two */
+.section + .section { padding-top: 0; }
+.section + .section .section-head { padding-top: 8px; }
 
 .section-head {
   max-width: 640px;
-  margin: 0 auto clamp(28px, 4vw, 44px);
+  margin: 0 auto clamp(20px, 3vw, 32px);
   text-align: center;
 }
 
@@ -826,8 +829,8 @@ p { margin: 0; }
 
 .quote {
   max-width: 720px;
-  margin: 40px auto 0;
-  padding: 26px 34px;
+  margin: 28px auto 0;
+  padding: 22px 30px;
   border-left: 3px solid var(--accent-2);
   border-radius: 0 var(--radius) var(--radius) 0;
   background: var(--bg-elevated);
@@ -933,8 +936,13 @@ p { margin: 0; }
 .project-card:hover .project-media img { transform: scale(1.04); }
 
 /* the screenshot follows the site theme: light shot in light mode, dark shot in dark mode */
-:root:not([data-theme="light"]) .project-media .shot-light,
-:root[data-theme="light"] .project-media .shot-dark { display: none; }
+/* the card's EN/LT switch (.is-flipped) shows the other one instead */
+:root:not([data-theme="light"]) .project-card:not(.is-flipped) .shot-light,
+:root:not([data-theme="light"]) .project-card.is-flipped .shot-dark,
+:root[data-theme="light"] .project-card:not(.is-flipped) .shot-dark,
+:root[data-theme="light"] .project-card.is-flipped .shot-light { display: none; }
+.project-media img { animation: shot-in .45s var(--ease); }
+@keyframes shot-in { from { opacity: 0; } }
 
 .project-badge {
   position: absolute;
@@ -979,9 +987,12 @@ p { margin: 0; }
   color: var(--text-muted);
 }
 
-/* ── card language: every text comes in <… lang="en"> and <… lang="lt"> ── */
-:root:not([data-card-lang="lt"]) .project-card [lang="lt"],
-:root[data-card-lang="lt"] .project-card [lang="en"] { display: none; }
+/* ── card language: every text comes in <… lang="en"> and <… lang="lt"> ──
+   Cards start in the page's card language; .is-flipped shows the other one. */
+:root:not([data-card-lang="lt"]) .project-card:not(.is-flipped) [lang="lt"],
+:root:not([data-card-lang="lt"]) .project-card.is-flipped [lang="en"],
+:root[data-card-lang="lt"] .project-card:not(.is-flipped) [lang="en"],
+:root[data-card-lang="lt"] .project-card.is-flipped [lang="lt"] { display: none; }
 
 .lang-switch {
   display: inline-flex;
@@ -1005,8 +1016,10 @@ p { margin: 0; }
   border-radius: 99px;
   transition: background-color .3s var(--ease), color .3s var(--ease);
 }
-:root:not([data-card-lang="lt"]) .lang-switch [data-l="en"],
-:root[data-card-lang="lt"] .lang-switch [data-l="lt"] {
+:root:not([data-card-lang="lt"]) .project-card:not(.is-flipped) .lang-switch [data-l="en"],
+:root:not([data-card-lang="lt"]) .project-card.is-flipped .lang-switch [data-l="lt"],
+:root[data-card-lang="lt"] .project-card:not(.is-flipped) .lang-switch [data-l="lt"],
+:root[data-card-lang="lt"] .project-card.is-flipped .lang-switch [data-l="en"] {
   background: var(--accent-1);
   color: #fff;
 }
@@ -1048,13 +1061,13 @@ p { margin: 0; }
 .projects-more {
   display: flex;
   justify-content: center;
-  margin-top: 28px;
+  margin-top: 22px;
 }
 .projects-count { color: var(--text-faint); font-weight: 500; }
 html:not(.js) .projects-more { display: none; }
 
 /* ── 7. CONTACT & FOOTER ──────────────────────────────────── */
-.section-contact { padding-bottom: clamp(80px, 10vw, 120px); }
+.section-contact { padding-bottom: clamp(48px, 7vw, 80px); }
 
 .contact-panel {
   position: relative;

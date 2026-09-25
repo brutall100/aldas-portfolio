@@ -38,25 +38,14 @@
     });
   }
 
-  /* ── Project card language (EN / LT, remembers your choice) ── */
-  // The inline script in <head> already set data-card-lang before first paint.
-  // A switch on any card flips every card, so the list never mixes languages.
-  var langSwitches = document.querySelectorAll('.lang-switch');
-
-  function applyCardLang(lang) {
-    root.setAttribute('data-card-lang', lang);
-    Array.prototype.forEach.call(langSwitches, function (btn) {
-      btn.setAttribute('aria-label', lang === 'lt' ? 'Show in English' : 'Rodyti lietuviškai');
-    });
-  }
-
-  applyCardLang(root.getAttribute('data-card-lang') === 'lt' ? 'lt' : 'en');
-
-  Array.prototype.forEach.call(langSwitches, function (btn) {
+  /* ── Project card EN / LT switch ─────────────────────── */
+  // Each switch flips only its own card: the text goes to the other language
+  // and, when the project has both, the screenshot goes to the other theme.
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-switch'), function (btn) {
     btn.addEventListener('click', function () {
-      var next = root.getAttribute('data-card-lang') === 'lt' ? 'en' : 'lt';
-      applyCardLang(next);
-      try { localStorage.setItem('cardLang', next); } catch (e) { /* ignore */ }
+      var card = btn.closest('.project-card');
+      var flipped = card.classList.toggle('is-flipped');
+      btn.setAttribute('aria-pressed', String(flipped));
     });
   });
 
