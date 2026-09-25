@@ -38,6 +38,44 @@
     });
   }
 
+  /* ── Project card language (EN / LT, remembers your choice) ── */
+  // The inline script in <head> already set data-card-lang before first paint.
+  // A switch on any card flips every card, so the list never mixes languages.
+  var langSwitches = document.querySelectorAll('.lang-switch');
+
+  function applyCardLang(lang) {
+    root.setAttribute('data-card-lang', lang);
+    Array.prototype.forEach.call(langSwitches, function (btn) {
+      btn.setAttribute('aria-label', lang === 'lt' ? 'Show in English' : 'Rodyti lietuviškai');
+    });
+  }
+
+  applyCardLang(root.getAttribute('data-card-lang') === 'lt' ? 'lt' : 'en');
+
+  Array.prototype.forEach.call(langSwitches, function (btn) {
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-card-lang') === 'lt' ? 'en' : 'lt';
+      applyCardLang(next);
+      try { localStorage.setItem('cardLang', next); } catch (e) { /* ignore */ }
+    });
+  });
+
+  /* ── "Show all projects" ──────────────────────────────── */
+  var projectGrid = document.getElementById('projectGrid');
+  var showAllBtn = document.getElementById('showAllProjects');
+
+  if (projectGrid && showAllBtn) {
+    var extraCount = projectGrid.querySelectorAll('.is-extra').length;
+    if (!extraCount) showAllBtn.parentNode.hidden = true;
+
+    showAllBtn.addEventListener('click', function () {
+      var open = projectGrid.classList.toggle('is-expanded');
+      showAllBtn.setAttribute('aria-expanded', String(open));
+      showAllBtn.firstChild.textContent = open ? 'Show fewer projects ' : 'Show all projects ';
+      if (!open) document.getElementById('projects').scrollIntoView();
+    });
+  }
+
   /* ── Mobile menu ──────────────────────────────────────── */
   var burger = document.getElementById('burger');
   var nav = document.getElementById('nav');
@@ -91,46 +129,89 @@
     Array.prototype.forEach.call(revealEls, function (el) { el.classList.add('is-visible'); });
   }
 
-  /* ── Scroll progress bar ──────────────────────────────── */
+  /* ── Scroll progress bar, sticky header, active nav link ── */
   var progressBar = document.getElementById('progressBar');
   var header = document.getElementById('siteHeader');
   var navLinks = document.querySelectorAll('.nav-link');
   var sections = document.querySelectorAll('main section[id]');
   var ticking = false;
+  var sectionTops = [];
+  var maxScroll = 0;
+  var lastSection = null;
+
+  // Measure the page once (and again on resize or when content changes)
+  // instead of on every scroll frame; reading layout while scrolling is
+  // what makes a page stutter.
+  function measure() {
+    maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    sectionTops = Array.prototype.map.call(sections, function (sec) {
+      return { id: sec.id, top: sec.getBoundingClientRect().top + window.pageYOffset };
+    });
+  }
 
   function onScroll() {
-    var scrollTop = window.pageYOffset || root.scrollTop;
+    var scrollTop = window.pageYOffset;
 
-    // progress
     if (progressBar) {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = max > 0 ? (scrollTop / max) * 100 : 0;
-      progressBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      var ratio = maxScroll > 0 ? scrollTop / maxScroll : 0;
+      progressBar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, ratio)) + ')';
     }
 
-    // header background once we leave the very top
     if (header) header.classList.toggle('is-stuck', scrollTop > 12);
 
-    // active nav link
     var current = '';
     var probe = scrollTop + window.innerHeight * 0.35;
-    Array.prototype.forEach.call(sections, function (sec) {
-      if (sec.offsetTop <= probe) current = sec.id;
-    });
-    Array.prototype.forEach.call(navLinks, function (link) {
-      link.classList.toggle('is-active', link.getAttribute('href') === '#' + current);
-    });
+    sectionTops.forEach(function (sec) { if (sec.top <= probe) current = sec.id; });
+    if (current !== lastSection) {
+      lastSection = current;
+      Array.prototype.forEach.call(navLinks, function (link) {
+        link.classList.toggle('is-active', link.getAttribute('href') === '#' + current);
+      });
+    }
 
     ticking = false;
   }
 
-  window.addEventListener('scroll', function () {
+  function requestTick() {
     if (ticking) return;
     ticking = true;
     window.requestAnimationFrame(onScroll);
-  }, { passive: true });
+  }
 
+  window.addEventListener('scroll', requestTick, { passive: true });
+  window.addEventListener('resize', function () { measure(); requestTick(); });
+  window.addEventListener('load', function () { measure(); requestTick(); });
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(function () { measure(); requestTick(); }).observe(document.body);
+  }
+
+  measure();
   onScroll();
+
+  /* ── In-page links: scroll there without adding #section to the address ── */
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (!link || e.defaultPrevented || e.button !== 0 ||
+        e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var id = link.getAttribute('href').slice(1);
+    var target = id && document.getElementById(id);
+    if (!target) return;
+
+    e.preventDefault();
+    if (id === 'home') window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    else target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+
+    // the skip link still has to move keyboard focus into the page
+    if (link.classList.contains('skip-link')) {
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    }
+  });
+
+  // An old bookmark such as /#projects still lands on the section; then tidy the address.
+  if (window.location.hash && window.history.replaceState) {
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 
   /* ── Cursor spotlight on cards ────────────────────────── */
   if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {

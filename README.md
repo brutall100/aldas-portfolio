@@ -36,14 +36,14 @@ Plain HTML, CSS and JavaScript — no frameworks and no build step.
 <table>
   <tr>
     <td width="50%" valign="top">
-      <a href="https://github.com/brutall100/vinica-shop"><img src="img/vinica.webp" alt="Vinica"></a>
+      <a href="https://vinica-grape-shop.vercel.app"><img src="img/projects/vinica-grape-shop.webp" alt="Vinica"></a>
       <h3>Vinica</h3>
       <p>A four-language online store for grapevine seedlings, with Stripe checkout and an admin panel.</p>
       <p><sub>Next.js · TypeScript · Prisma · PostgreSQL · Stripe</sub></p>
-      <p><a href="https://github.com/brutall100/vinica-shop">Code</a></p>
+      <p><a href="https://vinica-grape-shop.vercel.app">Live</a> · <a href="https://github.com/brutall100/vinica-grape-shop">Code</a></p>
     </td>
     <td width="50%" valign="top">
-      <a href="https://nuogasiela.lt"><img src="img/nuoga-siela.webp" alt="Nuoga Siela"></a>
+      <a href="https://nuogasiela.lt"><img src="img/projects/nuoga-siela.webp" alt="Nuoga Siela"></a>
       <h3>Nuoga Siela</h3>
       <p>An anonymous space to write out what you feel — burn it or release it. A zero-dependency PWA.</p>
       <p><sub>Deno · Deno KV · TypeScript · PWA</sub></p>
@@ -52,18 +52,18 @@ Plain HTML, CSS and JavaScript — no frameworks and no build step.
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <a href="https://www.viktorina.live"><img src="img/viktorina-cover.webp" alt="Viktorina.live"></a>
+      <a href="https://www.viktorina.live"><img src="img/projects/viktorina-live.webp" alt="Viktorina.live"></a>
       <h3>Viktorina.live</h3>
       <p>A live pub-quiz platform: join a game in real time, climb the leaderboard, earn credits.</p>
       <p><sub>JavaScript · Node.js · Real-time</sub></p>
       <p><a href="https://www.viktorina.live">Live</a></p>
     </td>
     <td width="50%" valign="top">
-      <a href="https://weekmenu.brutall100.deno.net"><img src="img/weekmeniu-opt.webp" alt="Week Menu"></a>
-      <h3>Week Menu</h3>
-      <p>A REST API and client for planning meals, ingredients and categories.</p>
-      <p><sub>Node.js · Express · MongoDB</sub></p>
-      <p><a href="https://weekmenu.brutall100.deno.net">Live</a> · <a href="https://github.com/brutall100/WeekMenu">Code</a></p>
+      <a href="https://weekmenu.brutall100.deno.net"><img src="img/projects/weekmenu-ai-meal-planner.webp" alt="WeekMenu"></a>
+      <h3>WeekMenu</h3>
+      <p>An AI meal planner: a week’s menu with recipes and a shopping list, tailored to ten diets.</p>
+      <p><sub>Deno · Fresh · Preact · Claude API · Tailwind</sub></p>
+      <p><a href="https://weekmenu.brutall100.deno.net">Live</a> · <a href="https://github.com/brutall100/weekmenu-ai-meal-planner">Code</a></p>
     </td>
   </tr>
 </table>
@@ -75,7 +75,7 @@ More projects on the [website](https://aldas-portfolio.site/#projects).
 | | |
 | --- | --- |
 | **Layout** | CSS Grid + Flexbox, fluid `clamp()` type, mobile-first breakpoints |
-| **Theming** | CSS custom properties, dark default + light toggle saved to `localStorage` |
+| **Theming** | CSS custom properties, dark default + light toggle saved to `localStorage`; project screenshots swap with the theme |
 | **Motion** | `IntersectionObserver` scroll reveals, shimmer sweeps, animated aurora background |
 | **A11y** | Skip link, focus-visible rings, ARIA state on the menu/toggle, `prefers-reduced-motion` support |
 | **Perf** | Optimised WebP images, lazy loading, explicit dimensions, zero JS dependencies |
@@ -89,7 +89,7 @@ Start any static server, e.g. `python3 -m http.server`, then open
 index.html    markup and content
 style.css     design tokens, layout, animations
 script.js     theme, menu, scroll reveal, progress bar
-img/          optimised project and profile images
+img/          profile photo; img/projects/ has light + dark project shots
 docs/         README screenshots
 ```
 
