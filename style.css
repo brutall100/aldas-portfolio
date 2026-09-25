@@ -856,7 +856,7 @@ p { margin: 0; }
 /* skills */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 18px;
 }
 .skill-card h3 {
@@ -916,6 +916,21 @@ p { margin: 0; }
 }
 .glow-card.project-card:hover { transform: translateY(-5px); }
 
+/* each card gets its own thin warm border: honey, terracotta, peach,
+   dusty rose, saffron, clay; brighter on hover */
+.project-card { --warm: #e0a96d; border-color: color-mix(in srgb, var(--warm) 45%, transparent); }
+.project-card:nth-child(6n+2) { --warm: #d9805f; }
+.project-card:nth-child(6n+3) { --warm: #f0b89a; }
+.project-card:nth-child(6n+4) { --warm: #c98b9a; }
+.project-card:nth-child(6n+5) { --warm: #e8b04b; }
+.project-card:nth-child(6n)   { --warm: #c47a54; }
+:root[data-theme="light"] .project-card { border-color: color-mix(in srgb, var(--warm) 70%, transparent); }
+.glow-card.project-card:hover {
+  border-color: var(--warm);
+  box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--warm) 25%, transparent),
+              0 18px 50px -30px var(--warm);
+}
+
 /* until "Show all projects" is pressed, only the first cards are shown */
 .js .project-grid:not(.is-expanded) .is-extra { display: none; }
 
@@ -923,8 +938,10 @@ p { margin: 0; }
   position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
+  margin: 10px 10px 0;
+  border-radius: calc(var(--radius) - 8px);
+  border: 1px solid color-mix(in srgb, var(--warm) 35%, transparent);
   background: var(--bg-elevated-2);
-  border-bottom: 1px solid var(--border);
 }
 .project-media img {
   width: 100%;
@@ -972,7 +989,7 @@ p { margin: 0; }
   flex-direction: column;
   gap: 8px;
   flex: 1;
-  padding: 16px 18px 18px;
+  padding: 18px 20px 20px;
 }
 .project-head {
   display: flex;
