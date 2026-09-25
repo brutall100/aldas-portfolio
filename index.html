@@ -33,12 +33,16 @@
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Apply the saved theme before first paint so the page never flashes. -->
+  <!-- Apply the saved theme and card language before first paint so the page never flashes. -->
   <script>
+    document.documentElement.classList.add('js');
     try {
       var t = localStorage.getItem('theme');
       if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    } catch (e) { /* storage blocked — keep the default dark theme */ }
+      var l = localStorage.getItem('cardLang') ||
+        (/^lt\b/i.test(navigator.language || '') ? 'lt' : 'en');
+      document.documentElement.setAttribute('data-card-lang', l === 'lt' ? 'lt' : 'en');
+    } catch (e) { /* storage blocked — keep the defaults */ }
   </script>
 
   <script type="application/ld+json">
@@ -153,7 +157,7 @@
           </div>
 
           <dl class="hero-stats reveal" data-delay="5">
-            <div><dt>7</dt><dd>Projects shipped</dd></div>
+            <div><dt>29</dt><dd>Projects built</dd></div>
             <div><dt>15+</dt><dd>Technologies used</dd></div>
             <div><dt>3</dt><dd>Languages spoken</dd></div>
           </dl>
@@ -286,24 +290,30 @@
           <p class="section-sub">Things I designed, built and shipped.</p>
         </header>
 
-        <div class="project-grid">
+        <div class="project-grid" id="projectGrid">
 
           <article class="project-card glow-card reveal" data-delay="1">
             <div class="project-media">
-              <img src="img/vinica.webp" width="800" height="500" loading="lazy" decoding="async" alt="Cover artwork for the Vinica grapevine seedling shop">
-              <span class="project-badge">Live</span>
+              <img class="shot-light" src="img/projects/vinica-grape-shop.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Vinica">
+              <img class="shot-dark" src="img/projects/vinica-grape-shop-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Vinica, dark theme">
+              <span class="project-badge"><span lang="en">Live</span><span lang="lt">Veikia</span></span>
             </div>
             <div class="project-body">
-              <h3>Vinica</h3>
-              <p>A production e-commerce store for grapevine seedlings, in four languages with
-                fully localised URLs. Stripe checkout, an admin panel behind Auth.js, order and
-                inventory models in PostgreSQL, and transactional email.</p>
+              <div class="project-head">
+                <h3>Vinica</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">An online shop for grape-vine seedlings in four languages. Filters, cart, Stripe card payments, parcel-locker delivery and an admin panel for products and orders.</p>
+              <p lang="lt">Vynuogių sodinukų el. parduotuvė keturiomis kalbomis. Filtrai, krepšelis, apmokėjimas kortele per Stripe, pristatymas į paštomatus ir administravimo skydelis prekėms bei užsakymams.</p>
               <ul class="tag-list tag-list-sm"><li>Next.js 16</li><li>TypeScript</li><li>Prisma</li><li>PostgreSQL</li><li>Stripe</li><li>Tailwind</li></ul>
               <div class="project-actions">
-                <a class="project-link project-link-alt" href="https://github.com/brutall100/vinica-shop" target="_blank" rel="noopener noreferrer">
-                  Code <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
-                </svg>
+                <a class="project-link" href="https://vinica-grape-shop.vercel.app" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Live site</span><span lang="lt">Svetainė</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/vinica-grape-shop" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
                 </a>
               </div>
             </div>
@@ -311,26 +321,26 @@
 
           <article class="project-card glow-card reveal" data-delay="2">
             <div class="project-media">
-              <img src="img/nuoga-siela.webp" width="800" height="500" loading="lazy" decoding="async" alt="Screenshot of the Nuoga Siela anonymous writing app">
-              <span class="project-badge">Live</span>
+              <img class="shot-light" src="img/projects/nuoga-siela.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Nuoga Siela">
+              <img class="shot-dark" src="img/projects/nuoga-siela-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Nuoga Siela, dark theme">
+              <span class="project-badge"><span lang="en">Live</span><span lang="lt">Veikia</span></span>
             </div>
             <div class="project-body">
-              <h3>Nuoga Siela</h3>
-              <p>An anonymous space to write out what you feel, then either burn the text —
-                it never leaves the browser — or release it with a chosen lifetime. Readers can
-                only answer “I understand you”. Built as a PWA with zero dependencies, and it
-                flags crisis wording to surface help.</p>
-              <ul class="tag-list tag-list-sm"><li>Deno</li><li>Deno KV</li><li>TypeScript</li><li>PWA</li><li>Vanilla JS</li></ul>
+              <div class="project-head">
+                <h3>Nuoga Siela</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">An anonymous place to let feelings out: write, then burn the text or set it adrift on the river. No accounts, no names. Readers can only answer “I understand you”.</p>
+              <p lang="lt">Anoniminė vieta išsakyti jausmus: parašyk, o tada sudegink tekstą arba paleisk jį upe. Jokių paskyrų ir vardų. Kiti gali tik atsakyti „Suprantu tave“.</p>
+              <ul class="tag-list tag-list-sm"><li>Deno</li><li>Deno KV</li><li>TypeScript</li><li>PWA</li></ul>
               <div class="project-actions">
                 <a class="project-link" href="https://nuogasiela.lt" target="_blank" rel="noopener noreferrer">
-                  Live site <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
+                  <span lang="en">Live site</span><span lang="lt">Svetainė</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
                 </a>
                 <a class="project-link project-link-alt" href="https://github.com/brutall100/nuoga-siela" target="_blank" rel="noopener noreferrer">
-                  Code <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
-                </svg>
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
                 </a>
               </div>
             </div>
@@ -338,109 +348,735 @@
 
           <article class="project-card glow-card reveal" data-delay="3">
             <div class="project-media">
-              <img src="img/viktorina-cover.webp" width="800" height="500" loading="lazy" decoding="async" alt="Cover artwork for the Viktorina.live quiz platform">
-              <span class="project-badge">Live</span>
+              <img class="shot-light" src="img/projects/weekmenu-ai-meal-planner.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of WeekMenu">
+              <img class="shot-dark" src="img/projects/weekmenu-ai-meal-planner-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of WeekMenu, dark theme">
+              <span class="project-badge"><span lang="en">Live</span><span lang="lt">Veikia</span></span>
             </div>
             <div class="project-body">
-              <h3>Viktorina.live</h3>
-              <p>A live pub-quiz platform: sign up, join a game in real time, climb the leaderboard and earn virtual credits.</p>
+              <div class="project-head">
+                <h3>WeekMenu</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">An AI meal planner: answer three questions and get a week’s menu with recipes and a shopping list, tailored to ten diets.</p>
+              <p lang="lt">Valgiaraščio planuoklė su DI: atsakai į tris klausimus ir gauni savaitės meniu su receptais bei pirkinių sąrašu, pritaikytą dešimčiai mitybos tipų.</p>
+              <ul class="tag-list tag-list-sm"><li>Deno</li><li>Fresh</li><li>Preact</li><li>Claude API</li><li>Tailwind</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://weekmenu.brutall100.deno.net" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Live site</span><span lang="lt">Svetainė</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/weekmenu-ai-meal-planner" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal" data-delay="1">
+            <div class="project-media">
+              <img src="img/projects/viktorina-live.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Viktorina.live">
+              <span class="project-badge"><span lang="en">Live</span><span lang="lt">Veikia</span></span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Viktorina.live</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A live pub-quiz platform: sign up, join a game in real time, climb the leaderboard and earn virtual credits.</p>
+              <p lang="lt">Gyva viktorina internete: užsiregistruok, žaisk realiu laiku su kitais, kopk į lyderių lentelę ir rink virtualius kreditus.</p>
               <ul class="tag-list tag-list-sm"><li>JavaScript</li><li>Node.js</li><li>Real-time</li></ul>
               <div class="project-actions">
                 <a class="project-link" href="https://www.viktorina.live" target="_blank" rel="noopener noreferrer">
-                  Live site <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
+                  <span lang="en">Live site</span><span lang="lt">Svetainė</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
                 </a>
               </div>
             </div>
           </article>
-          <article class="project-card glow-card reveal" data-delay="4">
+
+          <article class="project-card glow-card reveal" data-delay="2">
             <div class="project-media">
-              <img src="img/weekmeniu-opt.webp" width="800" height="800" loading="lazy" decoding="async" alt="Screenshot of the Week Menu meal planning app">
-              <span class="project-badge">Live</span>
+              <img class="shot-light" src="img/projects/todo-notebook.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Todo Notebook">
+              <img class="shot-dark" src="img/projects/todo-notebook-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Todo Notebook, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
             </div>
             <div class="project-body">
-              <h3>Week Menu</h3>
-              <p>A REST API and client for managing categories, meals, ingredients and stories, built with Node.js, Express and MongoDB.</p>
-              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>Express</li><li>MongoDB</li></ul>
+              <div class="project-head">
+                <h3>Todo Notebook</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A to-do list that looks like a paper notebook. Accounts with JWT login, every user sees only their own tasks, and a demo mode runs right in the browser.</p>
+              <p lang="lt">Užduočių sąrašas, primenantis popierinį sąsiuvinį. Paskyros su JWT prisijungimu, kiekvienas mato tik savo užduotis, o demo režimas veikia tiesiog naršyklėje.</p>
+              <ul class="tag-list tag-list-sm"><li>React</li><li>Express</li><li>MongoDB</li><li>JWT</li></ul>
               <div class="project-actions">
-                <a class="project-link" href="https://weekmenu.brutall100.deno.net" target="_blank" rel="noopener noreferrer">
-                  Live site <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
+                <a class="project-link" href="https://brutall100.github.io/todo-notebook/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
                 </a>
-                <a class="project-link project-link-alt" href="https://github.com/brutall100/WeekMenu" target="_blank" rel="noopener noreferrer">
-                  Code <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
-                </svg>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/todo-notebook" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
                 </a>
               </div>
             </div>
           </article>
-          <article class="project-card glow-card reveal" data-delay="5">
+
+          <article class="project-card glow-card reveal" data-delay="3">
             <div class="project-media">
-              <img src="img/portfolio.webp" width="800" height="450" loading="lazy" decoding="async" alt="Screenshot of the Aldas portfolio website">
-              <span class="project-badge">Live</span>
+              <img class="shot-light" src="img/projects/nasa-page.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of NASA Page">
+              <img class="shot-dark" src="img/projects/nasa-page-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of NASA Page, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
             </div>
             <div class="project-body">
-              <h3>Personal Portfolio</h3>
-              <p>This site. A responsive, hand-built portfolio with a custom design system, scroll animations and no framework — just HTML, CSS and JavaScript.</p>
+              <div class="project-head">
+                <h3>NASA Page</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A Mars-themed space explorer: NASA’s picture of the day, Mars rover photos and the NASA image library. If the API is down, it shows saved photos.</p>
+              <p lang="lt">Marso stiliaus kosmoso naršyklė: NASA dienos nuotrauka, Marso roverių nuotraukos ir NASA vaizdų biblioteka. Jei API neatsako, rodomos išsaugotos nuotraukos.</p>
+              <ul class="tag-list tag-list-sm"><li>JavaScript</li><li>NASA API</li><li>CSS</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/nasa-page/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/nasa-page" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/team-movie-night.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Team Movie Night">
+              <img class="shot-dark" src="img/projects/team-movie-night-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Team Movie Night, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Team Movie Night</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A movie-night picker for teams: everyone adds films and votes, then a popcorn reel spins to choose tonight’s movie.</p>
+              <p lang="lt">Filmų vakaro išrinkėjas komandai: visi prideda filmus ir balsuoja, o spragėsių ruletė išrenka šio vakaro filmą.</p>
+              <ul class="tag-list tag-list-sm"><li>JavaScript</li><li>Web Animations</li><li>localStorage</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/team-movie-night/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/team-movie-night" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/voting-system.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Voting System">
+              <img class="shot-dark" src="img/projects/voting-system-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Voting System, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Voting System</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A polling app with one fair rule: one person, one vote. Cast, change or take back your vote on paper-ballot cards.</p>
+              <p lang="lt">Balsavimo programėlė su viena taisykle: vienas žmogus, vienas balsas. Balsą gali atiduoti, pakeisti arba atsiimti.</p>
+              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>Express 5</li><li>SQLite</li><li>Playwright</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/voting-system/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/voting-system" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/petpals-express-mongodb.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of PetPals">
+              <img class="shot-dark" src="img/projects/petpals-express-mongodb-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of PetPals, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>PetPals</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A cosy pet-shelter list with full CRUD: filter, sort, add, edit and remove pets through an Express + MongoDB REST API.</p>
+              <p lang="lt">Jauki gyvūnų prieglaudos programėlė su pilnu CRUD: filtruok, rūšiuok, pridėk, redaguok ir šalink gyvūnus per Express + MongoDB REST API.</p>
+              <ul class="tag-list tag-list-sm"><li>Express</li><li>MongoDB</li><li>REST API</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/petpals-express-mongodb/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/petpals-express-mongodb" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/ember-chat.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Ember Chat">
+              <img class="shot-dark" src="img/projects/ember-chat-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Ember Chat, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Ember Chat</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A real-time chat where every message arrives like a letter sealed with wax. Socket.IO carries live messages, MySQL keeps the history.</p>
+              <p lang="lt">Realaus laiko pokalbiai, kuriuose kiekviena žinutė ateina kaip vašku užantspauduotas laiškas. Socket.IO neša žinutes, MySQL saugo istoriją.</p>
+              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>Socket.IO</li><li>MySQL</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/ember-chat/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/ember-chat" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/dandelion-chat.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Dandelion Chat">
+              <img class="shot-dark" src="img/projects/dandelion-chat-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Dandelion Chat, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Dandelion Chat</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A peer-to-peer chat with no server: share an invite link and two browsers talk directly over WebRTC.</p>
+              <p lang="lt">Pokalbiai be serverio: pasidalink kvietimo nuoroda, ir dvi naršyklės susijungia tiesiogiai per WebRTC.</p>
+              <ul class="tag-list tag-list-sm"><li>WebRTC</li><li>PeerJS</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/dandelion-chat/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/dandelion-chat" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/jsonplaceholder-archive.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of JSONPlaceholder Archive">
+              <img class="shot-dark" src="img/projects/jsonplaceholder-archive-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of JSONPlaceholder Archive, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>JSONPlaceholder Archive</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A multi-page site for the JSONPlaceholder API (users, posts, albums and comments) styled like an old post-office archive.</p>
+              <p lang="lt">Kelių puslapių svetainė JSONPlaceholder API duomenims (vartotojams, įrašams, albumams ir komentarams) senojo pašto archyvo stiliumi.</p>
+              <ul class="tag-list tag-list-sm"><li>JavaScript</li><li>REST API</li><li>fetch</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/jsonplaceholder-archive/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/jsonplaceholder-archive" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/viktorina-v2.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Viktorina v2">
+              <img class="shot-dark" src="img/projects/viktorina-v2-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Viktorina v2, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Viktorina v2</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A Lithuanian quiz where every right answer drops virtual litai into your wallet. A browser demo plus the full PHP + Node.js + MySQL version.</p>
+              <p lang="lt">Lietuviška viktorina, kurioje už kiekvieną teisingą atsakymą gauni virtualių litų. Demo naršyklėje ir pilna PHP + Node.js + MySQL versija.</p>
+              <ul class="tag-list tag-list-sm"><li>PHP</li><li>Node.js</li><li>MySQL</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/viktorina-v2/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/viktorina-v2" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/wayfare-travel-landing.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Wayfare">
+              <img class="shot-dark" src="img/projects/wayfare-travel-landing-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Wayfare, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Wayfare</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A travel landing page with a living map background: pick car, boat, bus or on foot, and the matching routes light up.</p>
+              <p lang="lt">Kelionių svetainė su gyvu žemėlapio fonu: pasirink automobilį, laivą, autobusą ar kelią pėsčiomis, ir tie maršrutai užsidega.</p>
+              <ul class="tag-list tag-list-sm"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/wayfare-travel-landing/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/wayfare-travel-landing" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/petras-dovydaitis.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Petras Dovydaitis">
+              <img class="shot-dark" src="img/projects/petras-dovydaitis-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Petras Dovydaitis, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Petras Dovydaitis</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A one-page site for ordering personal video greetings, designed as a fight-night poster with swinging arena spotlights.</p>
+              <p lang="lt">Vieno puslapio svetainė asmeniniams vaizdo sveikinimams užsakyti, sukurta kaip kovos vakaro plakatas su arenos prožektoriais.</p>
+              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>SQLite</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/petras-dovydaitis/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/petras-dovydaitis" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/scrimba-react-counter.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Neon Odometer">
+              <img class="shot-dark" src="img/projects/scrimba-react-counter-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Neon Odometer, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Neon Odometer</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A glowing click counter where digits roll on odometer wheels, with step sizes, a goal meter and a shared world counter.</p>
+              <p lang="lt">Švytintis paspaudimų skaitiklis, kurio skaičiai sukasi kaip odometro ratukai. Yra žingsniai, tikslo matuoklis ir bendras pasaulio skaitiklis.</p>
+              <ul class="tag-list tag-list-sm"><li>React</li><li>Vite</li><li>Supabase</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/scrimba-react-counter/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/scrimba-react-counter" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/openai-book-recommender.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Book Recommender">
+              <img class="shot-dark" src="img/projects/openai-book-recommender-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Book Recommender, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Book Recommender</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">Pick a genre and an AI librarian recommends your next book. The API key stays on the server, and a demo mode works without it.</p>
+              <p lang="lt">Pasirink žanrą, ir DI bibliotekininkas pasiūlys kitą knygą. API raktas lieka serveryje, o demo režimas veikia ir be jo.</p>
+              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>Express</li><li>OpenAI API</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/openai-book-recommender/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/openai-book-recommender" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/scrimba-ai-movie-pitch.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Movie Pitch">
+              <img class="shot-dark" src="img/projects/scrimba-ai-movie-pitch-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Movie Pitch, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Movie Pitch</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">Give a one-sentence idea and get a full movie pitch back: title, synopsis, cast and a poster, all written by AI.</p>
+              <p lang="lt">Parašyk vieno sakinio idėją ir gauk visą filmo pasiūlymą: pavadinimą, siužetą, aktorius ir plakatą, sukurtus DI.</p>
+              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>OpenAI API</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/scrimba-ai-movie-pitch/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/scrimba-ai-movie-pitch" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/modal-window-demo.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Modal Window Demo">
+              <img class="shot-dark" src="img/projects/modal-window-demo-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Modal Window Demo, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Modal Window Demo</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">Three accessible, animated modal windows built on the native dialog element. Focus stays inside, and Esc closes them.</p>
+              <p lang="lt">Trys prieinami, animuoti modaliniai langai su dialog elementu. Fokusas lieka viduje, o Esc juos uždaro.</p>
+              <ul class="tag-list tag-list-sm"><li>HTML dialog</li><li>CSS</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/modal-window-demo/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/modal-window-demo" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/lamp-login-registration.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of LAMP Login">
+              <img class="shot-dark" src="img/projects/lamp-login-registration-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of LAMP Login, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>LAMP Login</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">Sign-up, log-in and a dashboard on the classic LAMP stack: bcrypt passwords, prepared statements and CSRF tokens.</p>
+              <p lang="lt">Registracija, prisijungimas ir paskyros puslapis su klasikiniu LAMP: bcrypt slaptažodžiai, paruoštos SQL užklausos ir CSRF apsauga.</p>
+              <ul class="tag-list tag-list-sm"><li>PHP 8</li><li>MySQL</li><li>PDO</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/lamp-login-registration/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/lamp-login-registration" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/php-register-login-lt.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of RegiLogi">
+              <img class="shot-dark" src="img/projects/php-register-login-lt-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of RegiLogi, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>RegiLogi</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A register and log-in form on one page, in Lithuanian. Passwords are stored only as hashes, and SQL queries are safe from injection.</p>
+              <p lang="lt">Registracijos ir prisijungimo forma viename puslapyje. Slaptažodžiai saugomi tik kaip hash’as, o SQL užklausos apsaugotos nuo injekcijų.</p>
+              <ul class="tag-list tag-list-sm"><li>PHP</li><li>MySQL</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/php-register-login-lt/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/php-register-login-lt" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/node-register-login.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Node Register &amp; Login">
+              <img class="shot-dark" src="img/projects/node-register-login-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Node Register &amp; Login, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Node Register &amp; Login</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">Register and log in through a Node.js + Express API that keeps only salted scrypt password hashes in MySQL.</p>
+              <p lang="lt">Registracija ir prisijungimas per Node.js + Express API, kuris MySQL bazėje saugo tik „pasūdytus“ scrypt slaptažodžių hash’us.</p>
+              <ul class="tag-list tag-list-sm"><li>Node.js</li><li>Express</li><li>MySQL</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/node-register-login/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/node-register-login" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/viktorina-v1.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Viktorina v1">
+              <img class="shot-dark" src="img/projects/viktorina-v1-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Viktorina v1, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Viktorina v1</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">My first quiz game, from 2021: answer against the clock, earn litai, level up and submit your own questions.</p>
+              <p lang="lt">Mano pirmoji viktorina, sukurta 2021 m.: atsakyk prieš laikrodį, rink litus, kilk lygiais ir siųsk savo klausimus.</p>
+              <ul class="tag-list tag-list-sm"><li>JavaScript</li><li>localStorage</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/viktorina-v1/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/viktorina-v1" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/scrimba-hometown-jonava.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Visit Jonava">
+              <img class="shot-dark" src="img/projects/scrimba-hometown-jonava-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Visit Jonava, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Visit Jonava</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A one-page travel guide to Jonava, my hometown: top things to do, a local guide and city stats that count up.</p>
+              <p lang="lt">Vieno puslapio gidas po Jonavą, mano gimtąjį miestą: geriausios veiklos, vietinis gidas ir miesto skaičiai.</p>
+              <ul class="tag-list tag-list-sm"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/scrimba-hometown-jonava/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/scrimba-hometown-jonava" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img src="img/projects/awsome-ui.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Awesome UI">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Awesome UI</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A design mock-up turned into code with no framework: gradients, transitions, a testimonial slider and a responsive layout.</p>
+              <p lang="lt">Dizaino maketas, perkeltas į kodą be karkasų: gradientai, perėjimai, atsiliepimų slankiklis ir prisitaikantis išdėstymas.</p>
+              <ul class="tag-list tag-list-sm"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/awsome-ui/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/awsome-ui" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/scrimba-birthday-gift.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Birthday Gift Card">
+              <img class="shot-dark" src="img/projects/scrimba-birthday-gift-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Birthday Gift Card, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Birthday Gift Card</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">An interactive birthday card: unwrap five CSS-drawn gift boxes to reveal animated surprises and confetti.</p>
+              <p lang="lt">Interaktyvus gimtadienio atvirukas: išpakuok penkias CSS nupieštas dovanas ir pamatyk animuotus siurprizus bei konfeti.</p>
+              <ul class="tag-list tag-list-sm"><li>CSS</li><li>Web Animations</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/scrimba-birthday-gift/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/scrimba-birthday-gift" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="3">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/scrimba-extra-dice-game.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Extra Dice">
+              <img class="shot-dark" src="img/projects/scrimba-extra-dice-game-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Extra Dice, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Extra Dice</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A two-player dice game with a twist: one face gives +10, another takes 10 away. First to 20 wins.</p>
+              <p lang="lt">Kauliukų žaidimas dviem su staigmena: viena pusė duoda +10, kita atima 10. Laimi tas, kas pirmas surenka 20.</p>
+              <ul class="tag-list tag-list-sm"><li>JavaScript</li><li>CSS</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/scrimba-extra-dice-game/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/scrimba-extra-dice-game" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="1">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/scrimba-personal-site.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Personal Site">
+              <img class="shot-dark" src="img/projects/scrimba-personal-site-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Personal Site, dark theme">
+              <span class="project-badge badge-demo">Demo</span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Personal Site</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">A profile page you can restyle live: pick a font, accent colour, theme and corner style. My first Scrimba project.</p>
+              <p lang="lt">Profilio puslapis, kurio stilių gali keisti gyvai: šriftą, akcento spalvą, temą ir kampus. Mano pirmasis Scrimba projektas.</p>
+              <ul class="tag-list tag-list-sm"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <div class="project-actions">
+                <a class="project-link" href="https://brutall100.github.io/scrimba-personal-site/" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Demo</span><span lang="lt">Demo</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </a>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/scrimba-personal-site" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card glow-card reveal is-extra" data-delay="2">
+            <div class="project-media">
+              <img class="shot-light" src="img/projects/aldas-portfolio.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Personal Portfolio">
+              <img class="shot-dark" src="img/projects/aldas-portfolio-dark.webp" width="720" height="450" loading="lazy" decoding="async" alt="Screenshot of Personal Portfolio, dark theme">
+              <span class="project-badge"><span lang="en">Live</span><span lang="lt">Veikia</span></span>
+            </div>
+            <div class="project-body">
+              <div class="project-head">
+                <h3>Personal Portfolio</h3>
+                <button class="lang-switch" type="button" aria-label="Rodyti lietuviškai / Show in English">
+                  <span data-l="en">EN</span><span data-l="lt">LT</span>
+                </button>
+              </div>
+              <p lang="en">This site. A hand-built portfolio with light and dark themes, scroll animations and no framework.</p>
+              <p lang="lt">Ši svetainė. Rankomis sukurtas portfolio su šviesia ir tamsia tema, animacijomis ir be jokių karkasų.</p>
               <ul class="tag-list tag-list-sm"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
               <div class="project-actions">
                 <a class="project-link" href="https://aldas-portfolio.site" target="_blank" rel="noopener noreferrer">
-                  Live site <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
+                  <span lang="en">Live site</span><span lang="lt">Svetainė</span> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
                 </a>
-                <a class="project-link project-link-alt" href="https://github.com/brutall100/Aldas-Portfolio" target="_blank" rel="noopener noreferrer">
-                  Code <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
-                </svg>
+                <a class="project-link project-link-alt" href="https://github.com/brutall100/aldas-portfolio" target="_blank" rel="noopener noreferrer">
+                  <span lang="en">Code</span><span lang="lt">Kodas</span> <svg class="icon icon-solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
                 </a>
               </div>
             </div>
           </article>
-          <article class="project-card glow-card reveal" data-delay="6">
-            <div class="project-media">
-              <img src="img/awesome.svg" width="800" height="600" loading="lazy" decoding="async" alt="Awesome UI project artwork">
-              <span class="project-badge">Live</span>
-            </div>
-            <div class="project-body">
-              <h3>Awesome UI</h3>
-              <p>A showcase of advanced CSS: layered gradients, animation and layout work put together into one polished interface.</p>
-              <ul class="tag-list tag-list-sm"><li>HTML</li><li>CSS</li><li>Animation</li></ul>
-              <div class="project-actions">
-                <a class="project-link" href="https://brutall100.github.io/Awsome-ui-main" target="_blank" rel="noopener noreferrer">
-                  Live site <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
-                </a>
-                <a class="project-link project-link-alt" href="https://github.com/brutall100/Awsome-ui-main" target="_blank" rel="noopener noreferrer">
-                  Code <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
-                </svg>
-                </a>
-              </div>
-            </div>
-          </article>
-          <article class="project-card glow-card reveal" data-delay="7">
-            <div class="project-media">
-              <img src="img/todo-opt.webp" width="711" height="474" loading="lazy" decoding="async" alt="Preview of the To-Do management app">
-              <span class="project-badge badge-wip">In progress</span>
-            </div>
-            <div class="project-body">
-              <h3>To-Do Management App</h3>
-              <p>A React task manager with full CRUD and AI-assisted suggestions to help users plan their day. Currently under active development.</p>
-              <ul class="tag-list tag-list-sm"><li>React</li><li>Node.js</li><li>MongoDB</li></ul>
-              <div class="project-actions">
-                <a class="project-link project-link-alt" href="https://github.com/brutall100/Todo" target="_blank" rel="noopener noreferrer">
-                  Code <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
-                </svg>
-                </a>
-              </div>
-            </div>
-          </article>
+
+        </div>
+
+        <div class="projects-more">
+          <button class="btn btn-ghost" id="showAllProjects" type="button" aria-controls="projectGrid"
+            aria-expanded="false">
+            Show all projects <span class="projects-count">(29)</span>
+          </button>
         </div>
       </div>
     </section>

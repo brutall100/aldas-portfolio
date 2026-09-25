@@ -36,14 +36,14 @@ Paprastas HTML, CSS ir JavaScript — be karkasų (frameworks) ir be „build“
 <table>
   <tr>
     <td width="50%" valign="top">
-      <a href="https://github.com/brutall100/vinica-shop"><img src="img/vinica.webp" alt="Vinica"></a>
+      <a href="https://vinica-grape-shop.vercel.app"><img src="img/projects/vinica-grape-shop.webp" alt="Vinica"></a>
       <h3>Vinica</h3>
       <p>Keturių kalbų internetinė vynuogių sodinukų parduotuvė su Stripe apmokėjimu ir administravimo skydu.</p>
       <p><sub>Next.js · TypeScript · Prisma · PostgreSQL · Stripe</sub></p>
-      <p><a href="https://github.com/brutall100/vinica-shop">Kodas</a></p>
+      <p><a href="https://vinica-grape-shop.vercel.app">Svetainė</a> · <a href="https://github.com/brutall100/vinica-grape-shop">Kodas</a></p>
     </td>
     <td width="50%" valign="top">
-      <a href="https://nuogasiela.lt"><img src="img/nuoga-siela.webp" alt="Nuoga Siela"></a>
+      <a href="https://nuogasiela.lt"><img src="img/projects/nuoga-siela.webp" alt="Nuoga Siela"></a>
       <h3>Nuoga Siela</h3>
       <p>Anonimiška vieta išsirašyti jausmus – sudegink tekstą arba paleisk jį. PWA be jokių priklausomybių.</p>
       <p><sub>Deno · Deno KV · TypeScript · PWA</sub></p>
@@ -52,18 +52,18 @@ Paprastas HTML, CSS ir JavaScript — be karkasų (frameworks) ir be „build“
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <a href="https://www.viktorina.live"><img src="img/viktorina-cover.webp" alt="Viktorina.live"></a>
+      <a href="https://www.viktorina.live"><img src="img/projects/viktorina-live.webp" alt="Viktorina.live"></a>
       <h3>Viktorina.live</h3>
       <p>Gyva viktorinų platforma: prisijunk prie žaidimo realiu laiku, kilk lyderių lentelėje, rink kreditus.</p>
       <p><sub>JavaScript · Node.js · Real-time</sub></p>
       <p><a href="https://www.viktorina.live">Svetainė</a></p>
     </td>
     <td width="50%" valign="top">
-      <a href="https://weekmenu.brutall100.deno.net"><img src="img/weekmeniu-opt.webp" alt="Week Menu"></a>
-      <h3>Week Menu</h3>
-      <p>REST API ir klientas patiekalams, ingredientams ir kategorijoms planuoti.</p>
-      <p><sub>Node.js · Express · MongoDB</sub></p>
-      <p><a href="https://weekmenu.brutall100.deno.net">Svetainė</a> · <a href="https://github.com/brutall100/WeekMenu">Kodas</a></p>
+      <a href="https://weekmenu.brutall100.deno.net"><img src="img/projects/weekmenu-ai-meal-planner.webp" alt="WeekMenu"></a>
+      <h3>WeekMenu</h3>
+      <p>Valgiaraščio planuoklė su DI: savaitės meniu su receptais ir pirkinių sąrašu dešimčiai mitybos tipų.</p>
+      <p><sub>Deno · Fresh · Preact · Claude API · Tailwind</sub></p>
+      <p><a href="https://weekmenu.brutall100.deno.net">Svetainė</a> · <a href="https://github.com/brutall100/weekmenu-ai-meal-planner">Kodas</a></p>
     </td>
   </tr>
 </table>
@@ -75,7 +75,7 @@ Daugiau projektų – [svetainėje](https://aldas-portfolio.site/#projects).
 | | |
 | --- | --- |
 | **Išdėstymas** | CSS Grid + Flexbox, lankstus `clamp()` šriftas, „mobile-first“ lūžio taškai |
-| **Temos** | CSS kintamieji, tamsi tema pagal nutylėjimą + šviesios temos jungiklis, išsaugomas `localStorage` |
+| **Temos** | CSS kintamieji, tamsi tema pagal nutylėjimą + šviesios temos jungiklis, išsaugomas `localStorage`; projektų nuotraukos keičiasi kartu su tema |
 | **Animacijos** | `IntersectionObserver` atsiradimas slenkant, blizgesio efektai, judantis „aurora“ fonas |
 | **Prieinamumas** | „Skip link“, matomi fokuso rėmeliai, ARIA būsenos meniu ir jungikliui, `prefers-reduced-motion` palaikymas |
 | **Greitis** | Optimizuoti WebP paveikslėliai, „lazy loading“, nurodyti matmenys, jokių JS priklausomybių |
@@ -89,7 +89,7 @@ Paleisk bet kokį statinį serverį, pvz. `python3 -m http.server`, ir atidaryk
 index.html    struktūra ir turinys
 style.css     dizaino kintamieji, išdėstymas, animacijos
 script.js     tema, meniu, atsiradimas slenkant, progreso juosta
-img/          optimizuoti projektų ir profilio paveikslėliai
+img/          profilio nuotrauka; img/projects/ – šviesios ir tamsios projektų nuotraukos
 docs/         README ekrano nuotraukos
 ```
 
