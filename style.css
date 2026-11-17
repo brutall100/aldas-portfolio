@@ -1068,6 +1068,7 @@ p { margin: 0; }
 .badge-wip  { color: #fbbf24; }
 :root[data-theme="light"] .project-badge       { color: #047857; }
 :root[data-theme="light"] .project-badge.badge-demo { color: #0e7490; }
+:root[data-theme="light"] .project-badge.badge-wip  { color: #b45309; }
 
 .project-body {
   display: flex;
